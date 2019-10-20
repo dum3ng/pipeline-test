@@ -12,6 +12,7 @@ components:
         outputs: [data]
       - action: post_build_data
         inputs: [data]
+        config: {}
         outputs: [post_data]
 
   process_data:
@@ -43,13 +44,13 @@ pipelines:
         component: build_data
         action: post_build_data
         inputs:
-          data: { { steps.build_data.outputs.data } }
-          outputs: [post_data]
+          data: "{{ steps.build_data.outputs.data }}"
+        outputs: [post_data]
       - name: process_data
         component: process_data
         action: process_data
         inputs:
-          post_data: { { steps.post_build_data.outputs.post_data } }
+          post_data: "{{ steps.post_build_data.outputs.post_data }}"
         config:
           env: hello
         outputs: [processed_data]
