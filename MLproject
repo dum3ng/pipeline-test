@@ -45,7 +45,7 @@ pipelines:
         action: post_build_data
         inputs:
           data: "{{ steps.build_data.outputs.data }}"
-          outputs: [post_data]
+        outputs: [post_data]
       - name: process_data
         component: process_data
         action: process_data
