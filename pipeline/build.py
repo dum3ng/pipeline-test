@@ -15,13 +15,18 @@ def build_data_action(config):
 
 def post_build_data_action(config):
     def action_func(config, inputs):
-        # now inputs is a dict, because it is saved as a json file from the `build data` action
+        # now inputs is a dict
+        # data is a dict because output of the previous step is json
         data = inputs['data']
         name = data['name']
         n = int(data['meta'])
         # return a Iterable, should be saved as a .pkl file
         l = [f'{name} {x} \n' for x in range(n)]
-        return {'post_data': l}
+
+        def g():
+            for ll in l:
+                yield ll
+        return {'post_data': g()}
     return action_func
 
 

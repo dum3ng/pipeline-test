@@ -16,8 +16,12 @@ def process_data_action(config):
             lines.append(l)
         lines.insert(
             0, 'I am the line inserted by `process_data_action`: {}'.format(env))
+
+        def g():
+            for l in lines:
+                yield l
         # and return a model
-        return {'processed_data': lines}
+        return {'processed_data': g()}
     return action_func
 
 
