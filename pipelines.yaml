@@ -1,0 +1,34 @@
+pipelines:
+  default:
+    steps:
+      - name: build_data
+        component: build_data
+        action: build_data
+        inputs: {}
+        config:
+          a: { range: [1, 2, 1] }
+        outputs: [data]
+      - name: post_build_data
+        component: build_data
+        action: post_build_data
+        # run: 34c7d9bf5789449890d34daf5cd7d5b5
+        inputs:
+          data: "{{ steps.build_data.outputs.data }}"
+        outputs: [post_data]
+      - name: process_data
+        component: process_data
+        action: process_data
+        inputs:
+          post_data: "{{ steps.post_build_data.outputs.post_data }}"
+        config:
+          env:
+            enum: [hello, ohayou]
+        outputs: [processed_data]
+      - name: train_model
+        component: train
+        action: train
+      - name: test_model
+        component: train
+        action: test_model
+        inputs:
+          model: "{{steps.train_model.model.sk_models}}"

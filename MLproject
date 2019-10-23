@@ -24,34 +24,19 @@ components:
         config:
           env: string
         outputs: [processed_data]
+  train:
+    cls: pipeline.train.TrainComponent
+    description: train and test
+    action_list:
+      - action: train
+        config:
+          alpha: float
+        outputs: []
+      - action: test_model
+        inputs: [model]
 
 # 日志设置
 logging:
   level: DEBUG
 # 调试模式
 debug: false
-
-pipelines:
-  default:
-    steps:
-      - name: build_data
-        component: build_data
-        action: build_data
-        inputs: {}
-        config: { a: 3.2 }
-        outputs: [data]
-      - name: post_build_data
-        component: build_data
-        action: post_build_data
-        run: 34c7d9bf5789449890d34daf5cd7d5b5
-        # inputs:
-        #   data: "{{ steps.build_data.outputs.data }}"
-        # outputs: [post_data]
-      - name: process_data
-        component: process_data
-        action: process_data
-        inputs:
-          post_data: "{{ steps.post_build_data.outputs.post_data }}"
-        config:
-          env: hello
-        outputs: [processed_data]
