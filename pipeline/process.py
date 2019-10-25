@@ -12,7 +12,7 @@ def process_data_action(config):
         gene = inputs['post_data']
         env = config['env']
         lines = []
-        for l in gene():
+        for l in gene:
             lines.append(l)
         lines.insert(
             0, 'I am the line inserted by `process_data_action`: {}'.format(env))
